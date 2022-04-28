@@ -2,7 +2,9 @@ let number1 = document.getElementById("number1");
 let number2 = document.getElementById("number2")
 let userCalcInput = document.getElementById("user-calc-input")
 let checkButton = document.getElementById("check-button")
+let userInput = document.getElementById("user-input")
 
+let calculator = document.getElementById("calculator")
 let calcInput = document.getElementById("calc-input")
 let oneButton = document.getElementById("1-button")
 let twoButton = document.getElementById("2-button")
@@ -20,10 +22,79 @@ checkButton.addEventListener("click", function() {
     }
 })
 
+function checkForNumbers(string) {
+    return /\d/.test(string)
+}
+
+
 document.addEventListener("click", function(event) {
     if (event.target.classList.contains("calc-button")) {
-        userCalcInput.innerHTML = event.target.innerHTML + userCalcInput.innerHTML
+        if (event.target.innerHTML === "ac") {
+            userCalcInput.innerHTML = ""
+        } else if(event.target.innerHTML === "=") {
+            let equation = []
+            let currentString = ""
+            let input = userCalcInput.innerHTML.split("")
+            
+            // Divide string into numbers and operators
+            for (i=input.length; i >= 0; i--) {
+                
+                if(checkForNumbers(input[i])) {
+                    currentString = currentString + input[i]
+                } else {
+                    if (currentString !== "") {
+                        equation.push(currentString)
+                        currentString = ""
+                        equation.push(input[i])
+                    } else if (input[i]) {
+                        equation.push(input[i])
+                    }
+                }
+            }
+            if (currentString !== "") {
+                equation.push(currentString)
+                currentString = ""
+            }
+
+            // calculate 
+            for (i=0; i <= equation.length-1; i++) {
+                console.log(equation[i])
+            }
+
+            
+
+        } else {
+            userCalcInput.innerHTML = event.target.innerHTML + userCalcInput.innerHTML
+        }
     }
 })
 
+let prevposX, prevposY, currentposX, currentposY
+
+function drag(event) {
+    currentposX = prevposX - event.clientX;
+    currentposY = prevposY - event.clientY
+    prevposX = event.clientX;
+    prevposY = event.clientY;
+    
+    calculator.style.top = (calculator.offsetTop - currentposY) + "px"
+    calculator.style.left = (calculator.offsetLeft - currentposX) + "px"
+}
+
+function stopDrag() {
+    document.onmouseup = null
+    document.onmousemove = null
+}
+
+
+calculator.onmousedown = function(event) {
+    prevposX = event.clientX;
+    prevposY = event.clientY;
+
+    if (event.target.tagName !== "BUTTON") {
+        document.onmousemove = drag
+    }
+    
+    document.onmouseup = stopDrag
+}
 

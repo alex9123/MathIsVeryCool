@@ -37,18 +37,17 @@ document.addEventListener("click", function(event) {
             let input = userCalcInput.innerHTML.split("")
             
             // Divide string into numbers and operators
-            for (i=input.length; i >= 0; i--) {
+            for (i=input.length-1; i >= 0; i--) {
                 
                 if(checkForNumbers(input[i])) {
                     currentString = currentString + input[i]
                 } else {
                     if (currentString !== "") {
-                        equation.push(currentString)
-                        currentString = ""
-                        equation.push(input[i])
-                    } else if (input[i]) {
+                        equation.push(currentString, input[i])
+                    } else {
                         equation.push(input[i])
                     }
+                    currentString = ""
                 }
             }
             if (currentString !== "") {
@@ -56,11 +55,37 @@ document.addEventListener("click", function(event) {
                 currentString = ""
             }
 
-            // calculate 
-            for (i=0; i <= equation.length-1; i++) {
-                console.log(equation[i])
+            // calculate */
+            for (i=0; i <= equation.length-1; i ++) {
+
+                if (equation[i] === "×") {
+                    newNum = +equation[i-1] * +equation[i+1]
+                    equation.splice(i-1, 3, newNum)
+                    i -= 2
+
+                } else if (equation[i] ==="÷") {
+                    newNum = +equation[i-1] / +equation[i+1]
+                    equation.splice(i-1, 3, newNum)
+                    i -= 2
+                }
             }
 
+            // calculate +-
+            for (i=0; i <= equation.length-1; i ++) {
+
+                if (equation[i] === "+") {
+                    newNum = +equation[i-1] + +equation[i+1]
+                    equation.splice(i-1, 3, newNum)
+                    i -= 2
+
+                } else if (equation[i] ==="-") {
+                    newNum = +equation[i-1] - +equation[i+1]
+                    equation.splice(i-1, 3, newNum)
+                    i -= 2
+                }
+            }
+            console.log(String(equation[0]).split("").reverse())
+            userCalcInput.innerHTML = String(equation[0]).split("").reverse().join("")
             
 
         } else {

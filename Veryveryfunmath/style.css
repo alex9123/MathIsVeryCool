@@ -1,15 +1,9 @@
 #calculator {
     position: absolute;
-    border: 1px solid black;
     width: 275px;
-    height: 350px;
-    padding: 10px;
-
-}
-
-#calculator {
-    background-color: gray;
+    height: 400px;
     padding: 15px 15px 75px;
+    background-color: blue;
 }
 
 #calc-input {
@@ -34,9 +28,18 @@
 #input-buttons {
     text-align: center;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .calc-button {
+    background-color: white;
     height: 55px;
+}
+
+#num {
+    background-color: lightblue;
+}
+
+#equal {
+    grid-column: span 2;
 }

@@ -22,38 +22,30 @@ checkButton.addEventListener("click", function() {
     }
 })
 
-function checkForNumbers(string) {
-    return /\d/.test(string)
+
+// Divide string into numbers and operator
+function separateNumbers(string) {
+    let equation = []
+  
+    
+    equation = string.match(/[a-zA-Z]+|[()]+|[0-9]+|[+-×÷]/g)
+   
+    console.log(equation)
+    return equation
 }
 
 
+let superscript = false
+
 document.addEventListener("click", function(event) {
+    
     if (event.target.classList.contains("calc-button")) {
         if (event.target.innerHTML === "ac") {
             userCalcInput.innerHTML = ""
+            superscript = false
         } else if(event.target.innerHTML === "=") {
-            let equation = []
-            let currentString = ""
-            let input = userCalcInput.innerHTML.split("")
             
-            // Divide string into numbers and operators
-            for (i=input.length-1; i >= 0; i--) {
-                
-                if(checkForNumbers(input[i])) {
-                    currentString = currentString + input[i]
-                } else {
-                    if (currentString !== "") {
-                        equation.push(currentString, input[i])
-                    } else {
-                        equation.push(input[i])
-                    }
-                    currentString = ""
-                }
-            }
-            if (currentString !== "") {
-                equation.push(currentString)
-                currentString = ""
-            }
+            let equation = separateNumbers(userCalcInput.innerHTML)
 
             // calculate */
             for (i=0; i <= equation.length-1; i ++) {
@@ -69,7 +61,6 @@ document.addEventListener("click", function(event) {
                     i -= 2
                 }
             }
-
             // calculate +-
             for (i=0; i <= equation.length-1; i ++) {
 
@@ -84,12 +75,27 @@ document.addEventListener("click", function(event) {
                     i -= 2
                 }
             }
-            console.log(String(equation[0]).split("").reverse())
-            userCalcInput.innerHTML = String(equation[0]).split("").reverse().join("")
+            userCalcInput.innerHTML = equation
+            superscript = false
+        } else if(event.target.innerHTML.includes("x")) { 
+            if (event.target.innerHTML !== "" && !superscript) {
+                superscript = true
+            }
+        } else if(event.target.innerHTML === "del") {
+            let input = userCalcInput.innerHTML.split("")
+            console.log(input)
+            // userCalcInput.innerHTML = userCalcInput.innerHTML.slice(0, -1)
             
-
         } else {
-            userCalcInput.innerHTML = event.target.innerHTML + userCalcInput.innerHTML
+            if (superscript && checkForNumbers(event.target.innerHTML)) {          
+                userCalcInput.innerHTML = userCalcInput.innerHTML + "<sup>" + event.target.innerHTML
+            } else {
+                superscript = false
+                userCalcInput.innerHTML = userCalcInput.innerHTML + event.target.innerHTML
+                if(event.target.classList[1] == "brackets") {
+                    userCalcInput.innerHTML = userCalcInput.innerHTML + "("
+                }
+            }
         }
     }
 })

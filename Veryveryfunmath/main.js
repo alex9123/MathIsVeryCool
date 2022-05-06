@@ -26,9 +26,10 @@ checkButton.addEventListener("click", function() {
 // Divide string into numbers and operator
 function separateNumbers(string) {
     let equation = []
-  
+    console.log(string.lastIndexOf(string.match(/\(([^)]+)\)/g)))
+    console.log(string.match(/\(([^)]+)\)/g))
     
-    equation = string.match(/[a-zA-Z]+|[()]+|[0-9]+|[+-×÷]/g)
+    equation = string.match(/[a-zA-Z]+|[()]+|[.0-9]+|[+-×÷]/g)
    
     console.log(equation)
     return equation

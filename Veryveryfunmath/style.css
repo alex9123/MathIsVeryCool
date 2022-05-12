@@ -2,7 +2,7 @@
     position: absolute;
     width: 275px;
     height: 400px;
-    padding: 15px 15px 75px;
+    padding: 20px 15px 80px;
     background-color: blue;
 }
 
@@ -10,7 +10,7 @@
     background-color: white;
     position: relative;
     height: 30%;
-    margin: 0 0 15px;
+    margin: 0 0 10px;
 }
 
 /* #past-user-calc-input {
@@ -41,4 +41,16 @@
 
 #equal {
     grid-column: span 2;
+}
+
+#past-user-calc-input {
+    display: flex;
+    flex-direction: column-reverse;
+    margin: 0;
+    height: 80%;
+    overflow: auto
+}
+
+.history {
+    width: 100%;
 }
